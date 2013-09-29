@@ -3,12 +3,12 @@ package com.shenko.ballbreaker;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.math.Vector2;
 
 public class GameScreen implements Screen {
 	
 	World curWorld;
 	WorldRenderer Renderer;
+	int BallsRemaining = 3;
 	
 	@Override
 	public void render(float delta) {
@@ -30,6 +30,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		curWorld = new TestWorld();	
+		curWorld.SetBalls(BallsRemaining);
 		Renderer = new WorldRenderer(curWorld);
 		render((float)0.1);
 	}

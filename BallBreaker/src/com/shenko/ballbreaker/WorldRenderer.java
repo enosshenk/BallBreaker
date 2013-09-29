@@ -2,14 +2,13 @@ package com.shenko.ballbreaker;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 
 public class WorldRenderer {
 	boolean debugRender = false;
@@ -29,6 +28,8 @@ public class WorldRenderer {
 	Texture BatTex = new Texture("data/bat.png");
 	Sprite BatSprite = new Sprite(BatTex);
 	
+	BitmapFont Font = new BitmapFont(true);
+	
 	public WorldRenderer(World World)
 	{
 		curWorld = World;
@@ -40,11 +41,11 @@ public class WorldRenderer {
 	{
 	    Batch.setProjectionMatrix(Camera.combined);
 	    Batch.begin();
-	    if (debugRender)
-	    {
-		    Renderer.setProjectionMatrix(Camera.combined);
-		    Renderer.begin(ShapeType.Rectangle);
-	    }
+	    Renderer.setProjectionMatrix(Camera.combined);
+	    Renderer.begin(ShapeType.Rectangle);
+	    
+	    // Render backdrop
+	    Batch.draw(curWorld.Background, 0, 0, 600, 850);
 	    
 	    // Render the brick grid
 	    int x, y;
@@ -92,10 +93,22 @@ public class WorldRenderer {
 	    	Renderer.rect(curWorld.Bat.Bounds.getX(), curWorld.BAT_Y, curWorld.BAT_WIDTH, curWorld.BAT_HEIGHT);
 	    }
 	    
-	    Batch.end();
-	    if (debugRender)
+	    Renderer.end();
+	    Renderer.begin(ShapeType.Line);
+	    
+	    // Render launch aim
+	    if (curWorld.Launching)
 	    {
-	    	Renderer.end();
+	    	Renderer.line(curWorld.LaunchSource.x, curWorld.LaunchSource.y, curWorld.LaunchTarget.x, curWorld.LaunchTarget.y);
 	    }
+	    
+	    // Draw Score
+	    Font.draw(Batch, "Score: " + curWorld.Score, 30, 30);
+	    
+	    // Draw balls count
+	    Font.draw(Batch, "Balls: " + curWorld.BallsLeft, 500, 30);
+	    
+	    Batch.end();
+	    Renderer.end();
 	}
 }

@@ -9,7 +9,7 @@ public class Main {
 		cfg.title = "BallBreaker";
 		cfg.useGL20 = false;
 		cfg.width = 600;
-		cfg.height = 900;
+		cfg.height = 850;
 		
 		new LwjglApplication(new BallBreaker(), cfg);
 	}
